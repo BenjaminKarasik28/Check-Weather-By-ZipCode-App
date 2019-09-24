@@ -1,53 +1,76 @@
 console.log('main.js is connected!');
+const apiKEY = "11af52653248f1eb76b8c4495e7dff61"
 
-document.addEventListener('DOMContentLoaded', function(){
-  let input = document.createElement('input')
-  input.placeholder = 'Enter a zip code'
-  let button  = document.createElement('button')
-  button.textContent = 'Submit'
-  document.querySelector('.container').appendChild(input)
-  document.querySelector('.container').appendChild(button)
-  
-  button.addEventListener('click', function(){
-    let inputText = input.value
-    console.log(inputText)
+function apiCall(inputText){
 
-    let cityName = document.createElement('h2')
-    let temperature = document.createElement('p')
-    let weatherDesc = document.createElement('p')
-    let minTemp = document.createElement('p')
-    let maxTemp = document.createElement('p')
-
-    fetch(`http://api.openweathermap.org/data/2.5/weather?zip=${inputText},us&appid=11af52653248f1eb76b8c4495e7dff61`)
+  let name = document.createElement('h2')
+  let temp = document.createElement('p')
+  let description = document.createElement('p')
+  let min = document.createElement('p')
+  let max = document.createElement('p')
+  fetch(`http://api.openweathermap.org/data/2.5/weather?zip=${inputText},us&appid=${apiKEY}`)
       .then((response) => {
         return response.json();
     })
-    .then((response) => {
-      console.log(response);
+    .then((json) => {
+      console.log(json);
       
-      cityName.textContent = response.name
-
-      let allTemperatureVariables = response.main
+      name.textContent = json.name
+      let allTemperatureVariables = json.main
 
       const kelvinToFarhenheit = (temp)=>{
         temp = parseInt(temp)
         temp = (temp * 9/5) - 459.67
-        return temp.toFixed(0)
+        temp = temp.toFixed(0)
+        return temp
       }
-      temperature.textContent = kelvinToFarhenheit(allTemperatureVariables.temp)
-      minTemp.textContent =  kelvinToFarhenheit(allTemperatureVariables.temp_min)
-      maxTemp.textContent =  kelvinToFarhenheit(allTemperatureVariables.temp_max)
+      let temperature = ' It is: '+ (kelvinToFarhenheit(allTemperatureVariables.temp) + ' Degrees in ' + name.textContent)
+      temp.textContent = temperature
+      let min_temp = 'The minimum temperature here is: ' + (kelvinToFarhenheit(allTemperatureVariables.temp_min) + ' Degrees')
+      min.textContent =  min_temp
+      let max_temp = 'The maximum temperature here is: ' + (kelvinToFarhenheit(allTemperatureVariables.temp_max) + ' Degrees')
+      max.textContent =  max_temp
+      
      
-      weatherDesc.textContent = response.weather[0].description
+      description.textContent = json.weather[0].description
+      
 
-      document.querySelector('.container').appendChild(cityName)
-      document.querySelector('.container').appendChild(temperature)
-      document.querySelector('.container').appendChild(weatherDesc)
-      document.querySelector('.container').appendChild(minTemp)
-      document.querySelector('.container').appendChild(maxTemp)
+      
+    
+      document.querySelector('.container').appendChild(name)
+      document.querySelector('.container').appendChild(temp)
+      
+      document.querySelector('.container').appendChild(description)
+      document.querySelector('.container').appendChild(min)
+     
+      document.querySelector('.container').appendChild(max)
+      
+      
 
-  })
+    })
+
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  
+  
+  let input = document.querySelector('#search')
+  let button  = document.createElement('button')
+  button.textContent = 'Submit'
+  document.querySelector('.input').appendChild(input)
+  document.querySelector('.input').appendChild(button)
+  
+
+
+  apiCall('11226')
+  
+  button.addEventListener('click', function(){
+    let inputText = input.value
+    document.querySelector('.container').innerHTML = ''
+    apiCall(inputText)
+    input.value= ''
 
   })
 })
+
 
