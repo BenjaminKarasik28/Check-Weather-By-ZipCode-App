@@ -1,7 +1,23 @@
 body {
+    
+    font-family: 'Raleway', sans-serif;
     background-image: url("weatherAPIBAckground.jpg");
     background-size: cover;
     width: 100%;
-    color: white
+    color: white;
+    text-shadow: 1px 1px grey;
 }
   
+p {
+    font-family: 'Raleway', sans-serif;
+    margin-top: 10px;
+    text-align: center;
+    text-shadow: 1px 1px grey;
+    font-size: 55px;
+}
+
+h2{
+font-size: 95px;
+ font-family: 'Raleway', sans-serif;
+    text-align: center
+}
